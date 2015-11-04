@@ -209,6 +209,46 @@ class AbstractDefault
         return $this->db()->query(sprintf($query, implode(',', $data), $keyword));
     }
 
+    /**
+     * Get css file with style tag
+     *
+     * @param string $name
+     * @return bool|string
+     */
+    protected function getCssStyle($name = 'assets/style.css')
+    {
+        $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $name;
+        if(! is_file($file)) {
+            return false;
+        }
+        $css = file_get_contents($file);
+        $css = preg_replace_callback("/url\((.*?)\)/", function($matches) {
+            $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $matches[1];
+            if(! is_file($file)) {
+                return;
+            }
+            return 'url(data:'.mime_content_type($file).';base64,'.base64_encode(file_get_contents($file)).')';
+        }, $css);
+
+        return '<style>' . $css . '</style>';
+    }
+
+    /**
+     * Get js file with script tag
+     *
+     * @param string $name
+     * @return string
+     */
+    public function getJsScript($name = 'assets/default.js')
+    {
+        $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $name;
+        if(! is_file($file)) {
+            return false;
+        }
+
+        return '<script>' . file_get_contents($file) . '</script>';
+    }
+
     ####################################################################################################################
 
     /**
