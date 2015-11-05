@@ -47,9 +47,9 @@ use Laemmi\Yourls\Plugin\AbstractDefault;
 class Plugin extends AbstractDefault
 {
     /**
-     * Localization domain
+     * Namespace
      */
-    const LOCALIZED_DOMAIN = 'laemmi-yourls-default-tools';
+    const APP_NAMESPACE = 'laemmi-yourls-default-tools';
 
     ####################################################################################################################
 
@@ -63,7 +63,7 @@ class Plugin extends AbstractDefault
     {
         list($plugin) = $args;
 
-        if (false === stripos($plugin, self::LOCALIZED_DOMAIN)) {
+        if (false === stripos($plugin, self::APP_NAMESPACE)) {
             return;
         }
 

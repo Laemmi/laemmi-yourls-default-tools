@@ -40,9 +40,9 @@ namespace Laemmi\Yourls\Plugin;
 class AbstractDefault
 {
     /**
-     * Session namespace
+     * Namespace
      */
-    const SESSION_NAMESPACE = 'default';
+    const APP_NAMESPACE = 'laemmi';
 
     /**
      * Options
@@ -217,13 +217,13 @@ class AbstractDefault
      */
     protected function getCssStyle($name = 'assets/style.css')
     {
-        $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $name;
+        $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
         if(! is_file($file)) {
             return false;
         }
         $css = file_get_contents($file);
         $css = preg_replace_callback("/url\((.*?)\)/", function($matches) {
-            $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $matches[1];
+            $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $matches[1];
             if(! is_file($file)) {
                 return;
             }
@@ -241,7 +241,7 @@ class AbstractDefault
      */
     public function getJsScript($name = 'assets/default.js')
     {
-        $file = YOURLS_PLUGINDIR . '/' . static::LOCALIZED_DOMAIN . '/' . $name;
+        $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
         if(! is_file($file)) {
             return false;
         }
@@ -309,7 +309,7 @@ class AbstractDefault
      */
     protected function getSessionNamespace($namespace=null)
     {
-        $namespace = !is_null($namespace) ? $namespace : self::SESSION_NAMESPACE;
+        $namespace = !is_null($namespace) ? $namespace : static::APP_NAMESPACE;
 
         return $namespace;
     }
