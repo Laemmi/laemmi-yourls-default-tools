@@ -71,15 +71,56 @@ class Plugin extends AbstractDefault
 
         $key = array_search($plugin, $plugins);
         unset($plugins[$key]);
-
-        foreach($plugins as $k => $val) {
-            if (false !== stripos($val, 'laemmi-')) {
-                $key = $k;
-                break;
-            }
-        }
+        $key2 = $this->isLaemmiPlugins($plugins);
+        $key = false !== $key2 ? $key2 : $key;
         array_splice($plugins, $key, 0, array($plugin));
 
         yourls_update_option('active_plugins', $plugins);
+    }
+
+
+    /**
+     * Action deactivated_plugin
+     *
+     * @param array $args
+     * @throws \Exception
+     */
+    public function action_deactivated_plugin(array $args)
+    {
+        list($plugin) = $args;
+
+        if(false === stripos($plugin, self::APP_NAMESPACE)) {
+            return;
+        }
+
+        $plugins = $this->db()->plugins;
+
+        $key = $this->isLaemmiPlugins($plugins);
+
+        if(false !== $key) {
+            array_splice($plugins, $key, 0, array($plugin));
+            yourls_update_option('active_plugins', $plugins);
+            yourls_redirect(yourls_admin_url('plugins.php?success=notdeactivated' ), 302);
+        }
+    }
+
+    ####################################################################################################################
+
+    /**
+     * Check if laemmi plugins installed
+     * return key of array
+     *
+     * @param array $plugins
+     * @return bool|int
+     */
+    private function isLaemmiPlugins(array $plugins)
+    {
+        foreach($plugins as $key => $val) {
+            if (false !== stripos($val, 'laemmi-')) {
+                return $key;
+            }
+        }
+
+        return false;
     }
 }
