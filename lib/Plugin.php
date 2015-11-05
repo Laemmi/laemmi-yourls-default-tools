@@ -85,24 +85,24 @@ class Plugin extends AbstractDefault
      * @param array $args
      * @throws \Exception
      */
-    public function action_deactivated_plugin(array $args)
-    {
-        list($plugin) = $args;
-
-        if(false === stripos($plugin, self::APP_NAMESPACE)) {
-            return;
-        }
-
-        $plugins = $this->db()->plugins;
-
-        $key = $this->isLaemmiPlugins($plugins);
-
-        if(false !== $key) {
-            array_splice($plugins, $key, 0, array($plugin));
-            yourls_update_option('active_plugins', $plugins);
-            yourls_redirect(yourls_admin_url('plugins.php?success=notdeactivated' ), 302);
-        }
-    }
+//    public function action_deactivated_plugin(array $args)
+//    {
+//        list($plugin) = $args;
+//
+//        if(false === stripos($plugin, self::APP_NAMESPACE)) {
+//            return;
+//        }
+//
+//        $plugins = $this->db()->plugins;
+//
+//        $key = $this->isLaemmiPlugins($plugins);
+//
+//        if(false !== $key) {
+//            array_splice($plugins, $key, 0, array($plugin));
+//            yourls_update_option('active_plugins', $plugins);
+//            yourls_redirect(yourls_admin_url('plugins.php?success=notdeactivated' ), 302);
+//        }
+//    }
 
     ####################################################################################################################
 
