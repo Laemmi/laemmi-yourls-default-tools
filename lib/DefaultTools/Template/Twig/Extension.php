@@ -1,14 +1,4 @@
 <?php
-/*
-Plugin Name: laemmi´s default tools
-Plugin URI: https://github.com/Laemmi/laemmi-yourls-default-tools
-Description: Default tools for laemmi plugins
-Version: 1.0
-Author: laemmi
-Author URI: https://github.com/Laemmi
-Copyright 2015 laemmi
-*/
-
 /**
  * Copyright 2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
  *
@@ -32,20 +22,42 @@ Copyright 2015 laemmi
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     plugin.php
+ * @package     Extension.php
  * @author      Michael Lämmlein <m.laemmlein@wdv.de>
  * @copyright   ©2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version     2.7.0
- * @since       03.11.15
+ * @since       10.11.15
  */
 
-// No direct call
-if(!defined('YOURLS_ABSPATH'))die();
+/**
+ * Namespace
+ */
+namespace Laemmi\Yourls\DefaultTools\Template\Twig;
 
-if (!yourls_is_API()) {
-    require_once 'vendor/autoload.php';
-    new Laemmi\Yourls\DefaultTools\Plugin([
-        'db' => $ydb
-    ]);
+class Extension extends \Twig_Extension
+{
+    private $_options = [];
+
+    public function __construct(array $options)
+    {
+        $this->_options = $options;
+    }
+
+    public function getName()
+    {
+        return 'yourls_functions';
+    }
+
+    public function getFunctions()
+    {
+        return array(
+            new \Twig_SimpleFunction('yourls__', function($text, $domain = '') {
+                if(! $domain) {
+                    $domain = $this->_options['namespace'];
+                }
+                return yourls__($text, $domain);
+            }),
+        );
+    }
 }

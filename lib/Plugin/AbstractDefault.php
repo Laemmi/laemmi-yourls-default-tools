@@ -33,6 +33,11 @@
 namespace Laemmi\Yourls\Plugin;
 
 /**
+ * Use
+ */
+use Laemmi\Yourls\DefaultTools\Template;
+
+/**
  * Class AbstractDefault
  *
  * @package Laemmi\Yourls\Plugin
@@ -70,7 +75,14 @@ class AbstractDefault
                     break;
             }
         }
+        // Init some stuff ...
+        $this->init();
     }
+
+    /**
+     * Init function
+     */
+    protected function init() {}
 
     /**
      * Set options
@@ -249,6 +261,15 @@ class AbstractDefault
         return '<script>' . file_get_contents($file) . '</script>';
     }
 
+    /**
+     * Load textdomain for translations
+     */
+    public function loadTextdomain()
+    {
+        $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/translations';
+        yourls_load_custom_textdomain(static::APP_NAMESPACE, $file);
+    }
+
     ####################################################################################################################
 
     /**
@@ -336,5 +357,39 @@ class AbstractDefault
     protected function setRequest($key, $val)
     {
         $_REQUEST[$key] = $val;
+    }
+
+    ####################################################################################################################
+
+    /**
+     * Template
+     *
+     * @var null|TemplateInterface
+     */
+    private $_template = null;
+
+    /**
+     * Init Template
+     *
+     * @param array $options
+     */
+    protected function initTemplate(array $options = array())
+    {
+        $options['path_template'] = isset($options['path_template']) ? $options['path_template'] : 'templates';
+        $options['path_template'] = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $options['path_template'];
+        $options['namespace'] = static::APP_NAMESPACE;
+
+        $this->_template = Template::factory('twig');
+        $this->_template->init($options);
+    }
+
+    /**
+     * Get Template
+     *
+     * @return TemplateInterface|null
+     */
+    protected function getTemplate()
+    {
+        return $this->_template;
     }
 }

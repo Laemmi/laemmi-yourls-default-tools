@@ -35,8 +35,9 @@
  */
 namespace Laemmi\Yourls\DefaultTools;
 
-require_once 'Plugin/AbstractDefault.php';
-
+/**
+ * Use
+ */
 use Laemmi\Yourls\Plugin\AbstractDefault;
 
 /**
