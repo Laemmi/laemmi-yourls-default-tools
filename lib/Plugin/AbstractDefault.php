@@ -145,7 +145,12 @@ class AbstractDefault
      */
     protected function getDateTime($time='now')
     {
+        // Check if UNIX-Timestamp
+        if(preg_match('/^\d{10}/', $time)) {
+            $time = '@' . $time;
+        }
         $date = new \DateTime($time, new \DateTimeZone('UTC'));
+
         return $date;
     }
 
