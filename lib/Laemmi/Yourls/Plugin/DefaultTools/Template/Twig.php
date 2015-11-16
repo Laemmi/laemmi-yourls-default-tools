@@ -81,7 +81,7 @@ class Twig implements TemplateInterface
     public function render($name = '', array $context = array())
     {
         $context = array_merge($context, $this->_assign);
-        unset($this->_assign);
+        $this->_assign = [];
         return $this->_twig->render($this->getName($name), $context);
     }
 
