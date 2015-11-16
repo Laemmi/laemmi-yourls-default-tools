@@ -30,7 +30,7 @@
 /**
  * Namespace
  */
-namespace Laemmi\Yourls\DefaultTools;
+namespace Laemmi\Yourls\Plugin\DefaultTools;
 
 /**
  * Class Template

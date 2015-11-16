@@ -35,7 +35,7 @@ namespace Laemmi\Yourls\Plugin;
 /**
  * Use
  */
-use Laemmi\Yourls\DefaultTools\Template;
+use Laemmi\Yourls\Plugin\DefaultTools\Template;
 
 /**
  * Class AbstractDefault
@@ -382,6 +382,8 @@ class AbstractDefault
     {
         $options['path_template'] = isset($options['path_template']) ? $options['path_template'] : 'templates';
         $options['path_template'] = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $options['path_template'];
+        $options['path_cache'] = isset($options['path_cache']) ? $options['path_cache'] : 'cache/twig';
+        $options['path_cache'] = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $options['path_cache'];
         $options['namespace'] = static::APP_NAMESPACE;
 
         $this->_template = Template::factory('twig');
