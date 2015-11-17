@@ -1,8 +1,7 @@
 {
   "require": {
     "twig/twig": "~1.0",
-    "twig/extensions": "~1.0",
-    "umpirsky/twig-gettext-extractor": "dev-master"
+    "twig/extensions": "~1.0"
   },
 
   "autoload": {
