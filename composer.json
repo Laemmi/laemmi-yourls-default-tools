@@ -1,6 +1,6 @@
 {
   "name": "laemmi/laemmi-yourls-default-tools",
-  "type": "yourls-plugin",
+  "type": "wordpress-plugin",
   "description": "Plugin for YOURLS. Default tools to use in some laemmi plugins",
   "keywords": ["yourls","plugin"],
   "homepage": "http://github.com/laemmi/laemmi-yourls-default-tools",
