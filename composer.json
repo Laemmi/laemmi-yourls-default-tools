@@ -1,6 +1,6 @@
 {
   "name": "laemmi/laemmi-yourls-default-tools",
-  "type": "library",
+  "type": "yourls-plugin",
   "description": "Plugin for YOURLS. Default tools to use in some laemmi plugins",
   "keywords": ["yourls","plugin"],
   "homepage": "http://github.com/laemmi/laemmi-yourls-default-tools",
@@ -13,6 +13,7 @@
   }],
 
   "require": {
+    "composer/installers": "~1.0",
     "twig/twig": "~1.0",
     "twig/extensions": "~1.0"
   },
