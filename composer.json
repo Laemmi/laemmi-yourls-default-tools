@@ -1,9 +1,9 @@
 {
-  "name": "Laemmi/laemmi-yourls-default-tools",
+  "name": "laemmi/laemmi-yourls-default-tools",
   "type": "library",
   "description": "Plugin for YOURLS. Default tools to use in some laemmi plugins",
   "keywords": ["yourls","plugin"],
-  "homepage": "http://github.com/Laemmi/laemmi-yourls-default-tools",
+  "homepage": "http://github.com/laemmi/laemmi-yourls-default-tools",
   "license": "MIT",
   "authors": [{
     "name": "Michael Lämmlein",
