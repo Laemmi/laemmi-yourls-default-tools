@@ -1,4 +1,17 @@
 {
+  "name": "Laemmi/laemmi-yourls-default-tools",
+  "type": "library",
+  "description": "Plugin for YOURLS. Default tools to use in some laemmi plugins",
+  "keywords": ["yourls","plugin"],
+  "homepage": "http://github.com/Laemmi/laemmi-yourls-default-tools",
+  "license": "MIT",
+  "authors": [{
+    "name": "Michael Lämmlein",
+    "email": "laemmi@spacerabbit.de",
+    "homepage": "http://www.spacerabbit.de",
+    "role": "Developer"
+  }],
+
   "require": {
     "twig/twig": "~1.0",
     "twig/extensions": "~1.0"
