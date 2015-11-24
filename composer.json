@@ -13,7 +13,7 @@
   }],
 
   "require": {
-    "composer/installers": "~1.0",
+    "laemmi/composer-installer": "^1.0",
     "twig/twig": "~1.0",
     "twig/extensions": "~1.0"
   },
