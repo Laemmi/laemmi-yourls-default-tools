@@ -44,8 +44,26 @@ Copyright 2015 laemmi
 if(!defined('YOURLS_ABSPATH'))die();
 
 if (!yourls_is_API()) {
-    require_once 'vendor/autoload.php';
+    laemmi_yourls_default_tools_plugin();
     new Laemmi\Yourls\Plugin\DefaultTools\Plugin([
         'db' => $ydb
     ]);
+}
+
+function laemmi_yourls_default_tools_plugin() {
+    $path = [
+        __DIR__ . '/vendor/autoload.php',
+        __DIR__ . '/../../../vendor/autoload.php',
+    ];
+    $loader = false;
+    foreach($path as $file) {
+        if (file_exists($file)) {
+            $loader = require_once $file;
+        }
+    }
+    if(! $loader instanceof Composer\Autoload\ClassLoader) {
+        die('You must set up the project dependencies, run the following commands:' . PHP_EOL .
+            'curl -s http://getcomposer.org/installer | php' . PHP_EOL .
+            'php composer.phar install' . PHP_EOL);
+    }
 }
