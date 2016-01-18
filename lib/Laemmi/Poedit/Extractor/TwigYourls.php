@@ -72,7 +72,7 @@ class TwigYourls
         $content = file_get_contents($file);
         $content = preg_replace("/\{\{(.*?)\}\}/", "<?php$1?>", $content);
 
-        $file_cache = '/tmp/cache/' . uniqid();
+        $file_cache = tempnam(sys_get_temp_dir(), uniqid());
 
         if(file_put_contents($file_cache, $content)) {
             $this->_templates[] = $file_cache;
