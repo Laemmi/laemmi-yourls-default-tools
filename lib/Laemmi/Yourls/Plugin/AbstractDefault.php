@@ -61,7 +61,7 @@ class AbstractDefault
      *
      * @var bool
      */
-    private $_isBootstrap = false;
+    protected static $_isBootstrap = false;
 
     /**
      * Constructor
@@ -280,8 +280,8 @@ class AbstractDefault
      */
     public function getBootstrap()
     {
-        if(false === $this->_isBootstrap) {
-            $this->_isBootstrap = true;
+        if(false === self::$_isBootstrap) {
+            self::$_isBootstrap = true;
             $path = yourls_site_url(false) . '/user/plugins/' . self::APP_NAMESPACE . '/assets/lib/bootstrap/dist';
             return trim('
             <link href="' . $path . '/css/bootstrap.min.css" rel="stylesheet">
