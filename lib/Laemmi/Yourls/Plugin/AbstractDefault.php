@@ -47,7 +47,7 @@ class AbstractDefault
     /**
      * Namespace
      */
-    const APP_NAMESPACE = 'laemmi';
+    const APP_NAMESPACE = 'laemmi-yourls-default-tools';
 
     /**
      * Options
@@ -55,6 +55,13 @@ class AbstractDefault
      * @var array
      */
     protected $_options = [];
+
+    /**
+     * Is bootstrap loaded
+     *
+     * @var bool
+     */
+    private $_isBootstrap = false;
 
     /**
      * Constructor
@@ -264,6 +271,25 @@ class AbstractDefault
         }
 
         return '<script>' . file_get_contents($file) . '</script>';
+    }
+
+    /**
+     * Get bootstrap js
+     *
+     * @return bool|string
+     */
+    public function getBootstrap()
+    {
+        if(false === $this->_isBootstrap) {
+            $this->_isBootstrap = true;
+            $path = yourls_site_url(false) . '/user/plugins/' . self::APP_NAMESPACE . '/assets/lib/bootstrap/dist';
+            return trim('
+            <link href="' . $path . '/css/bootstrap.min.css" rel="stylesheet">
+            <link href="' . $path . '/css/bootstrap-theme.min.css" rel="stylesheet">
+            <script src="' . $path . '/js/bootstrap.min.js"></script>
+            ');
+        }
+        return false;
     }
 
     /**
