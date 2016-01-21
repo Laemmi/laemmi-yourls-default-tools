@@ -425,4 +425,28 @@ class AbstractDefault
     {
         return $this->_template;
     }
+
+    ####################################################################################################################
+
+    /**
+     * Get allowed permissions
+     *
+     * @return array
+     */
+    protected function helperGetAllowedPermissions()
+    {
+        if($this->getSession('login', 'laemmi-yourls-easy-ldap')) {
+            $inter = array_intersect_key($this->_options['allowed_groups'], $this->getSession('groups', 'laemmi-yourls-easy-ldap'));
+            $permissions = [];
+            foreach ($inter as $val) {
+                foreach ($val as $_val) {
+                    $permissions[$_val] = $_val;
+                }
+            }
+        } else {
+            $permissions = array_combine($this->_adminpermission, $this->_adminpermission);
+        }
+
+        return $permissions;
+    }
 }
