@@ -449,4 +449,17 @@ class AbstractDefault
 
         return $permissions;
     }
+
+    /**
+     * Has permission to right
+     *
+     * @param $permission
+     * @return bool
+     */
+    protected function _hasPermission($permission)
+    {
+        $permissions = $this->helperGetAllowedPermissions();
+
+        return isset($permissions[$permission]);
+    }
 }
