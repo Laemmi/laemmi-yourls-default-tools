@@ -1,8 +1,5 @@
 <?php
 /**
- * Copyright 2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
- *
- *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -22,29 +19,18 @@
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     Plugin.php
- * @author      Michael Lämmlein <m.laemmlein@wdv.de>
- * @copyright   ©2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
+ * @author      Michael Lämmlein <laemmi@spacerabbit.de>
+ * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version     2.7.0
+ * @version     1.0.0
  * @since       03.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin\DefaultTools;
 
-/**
- * Use
- */
+use Exception;
 use Laemmi\Yourls\Plugin\AbstractDefault;
 
-/**
- * Class Plugin
- *
- * @package Laemmi\Yourls\DefaultTools
- */
 class Plugin extends AbstractDefault
 {
     /**
@@ -52,23 +38,21 @@ class Plugin extends AbstractDefault
      */
     const APP_NAMESPACE = 'laemmi-yourls-default-tools';
 
-    ####################################################################################################################
-
     /**
      * Action activated_plugin
      *
      * @param array $args
-     * @throws \Exception
+     * @throws Exception
      */
     public function action_activated_plugin(array $args)
     {
-        list($plugin) = $args;
+        list ($plugin) = $args;
 
         if (false === stripos($plugin, self::APP_NAMESPACE)) {
             return;
         }
 
-        $plugins = $this->db()->plugins;
+        $plugins = $this->db()->get_plugins();
 
         $key = array_search($plugin, $plugins);
         unset($plugins[$key]);
@@ -84,7 +68,7 @@ class Plugin extends AbstractDefault
      * Action deactivated_plugin
      *
      * @param array $args
-     * @throws \Exception
+     * @throws Exception
      */
 //    public function action_deactivated_plugin(array $args)
 //    {
@@ -94,7 +78,7 @@ class Plugin extends AbstractDefault
 //            return;
 //        }
 //
-//        $plugins = $this->db()->plugins;
+//        $plugins = $this->db()->get_plugins();
 //
 //        $key = $this->isLaemmiPlugins($plugins);
 //
@@ -116,7 +100,7 @@ class Plugin extends AbstractDefault
      */
     private function isLaemmiPlugins(array $plugins)
     {
-        foreach($plugins as $key => $val) {
+        foreach ($plugins as $key => $val) {
             if (false !== stripos($val, 'laemmi-')) {
                 return $key;
             }

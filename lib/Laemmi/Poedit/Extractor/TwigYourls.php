@@ -20,7 +20,7 @@
  *
  * @category    laemmi-yourls-default-tools
  * @package     TwigYourls.php
- * @author      Michael Lämmlein <ml@spacerabbit.de>
+ * @author      Michael Lämmlein <laemmi@spacerabbit.de>
  * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version     1.0.0

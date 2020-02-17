@@ -1,8 +1,5 @@
 <?php
 /**
- * Copyright 2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
- *
- *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -22,17 +19,13 @@
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     Extension.php
- * @author      Michael Lämmlein <m.laemmlein@wdv.de>
- * @copyright   ©2007-2015 Andreas Heigl/wdv Gesellschaft für Medien & Kommunikation mbH & Co. OHG
+ * @author      Michael Lämmlein <ml@spacerabbit.de>
+ * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
- * @version     2.7.0
+ * @version     1.0.0
  * @since       10.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template\Twig;
 
 class Extension extends \Twig_Extension

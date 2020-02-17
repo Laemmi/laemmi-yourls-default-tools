@@ -19,7 +19,6 @@
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     TemplateInterface.php
  * @author      Michael Lämmlein <ml@spacerabbit.de>
  * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
@@ -27,16 +26,8 @@
  * @since       10.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template;
 
-/**
- * Interface TemplateInterface
- *
- * @package Laemmi\Yourls\DefaultTools\Template
- */
 interface TemplateInterface
 {
     /**

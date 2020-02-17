@@ -19,29 +19,20 @@
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     Template.php
- * @author      Michael Lämmlein <ml@spacerabbit.de>
+ * @author      Michael Lämmlein <laemmi@spacerabbit.de>
  * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version     1.0.0
  * @since       10.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin\DefaultTools;
 
-/**
- * Class Template
- *
- * @package Laemmi\Yourls\DefaultTools
- */
 class Template
 {
     public static function factory($factory)
     {
-        switch($factory) {
+        switch ($factory) {
             case 'twig':
                 return new Template\Twig();
         }

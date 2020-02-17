@@ -19,30 +19,22 @@
  * IN THE SOFTWARE.
  *
  * @category    Laemmi\Yourls\Plugin
- * @package     Laemmi\Yourls\Plugin
- * @author      Michael Lämmlein <ml@spacerabbit.de>
+ * @author      Michael Lämmlein <laemmi@spacerabbit.de>
  * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
  * @version     1.0.0
  * @since       03.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin;
 
-/**
- * Use
- */
+use DateTime;
+use DateTimeZone;
+use Exception;
 use Laemmi\Yourls\Plugin\DefaultTools\Template;
+use PDO;
 
-/**
- * Class AbstractDefault
- *
- * @package Laemmi\Yourls\Plugin
- */
-class AbstractDefault
+abstract class AbstractDefault
 {
     /**
      * Namespace
@@ -73,7 +65,7 @@ class AbstractDefault
         $this->setOptions($options);
 
         foreach (get_class_methods($this) as $key => $method) {
-            switch(substr($method, 0, 7)) {
+            switch (substr($method, 0, 7)) {
                 case 'action_':
                     $this->addAction($method);
                     break;
@@ -133,12 +125,12 @@ class AbstractDefault
      * Get db connection
      *
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     protected function db()
     {
-        if(! isset($this->_options['db']) && ! $this->_options['db'] instanceof ezSQLcore) {
-            throw new \Exception('No database instance available');
+        if (!isset($this->_options['db']) || !$this->_options['db'] instanceof PDO) {
+            throw new Exception('No database instance available');
         }
 
         return $this->_options['db'];
@@ -148,15 +140,16 @@ class AbstractDefault
      * Return DateTime instance
      *
      * @param string $time
-     * @return \DateTime
+     * @return DateTime
+     * @throws Exception
      */
-    protected function getDateTime($time='now')
+    protected function getDateTime($time = 'now')
     {
         // Check if UNIX-Timestamp
-        if(preg_match('/^\d{10}/', $time)) {
+        if (preg_match('/^\d{10}/', $time)) {
             $time = '@' . $time;
         }
-        $date = new \DateTime($time, new \DateTimeZone('UTC'));
+        $date = new DateTime($time, new DateTimeZone('UTC'));
 
         return $date;
     }
@@ -165,9 +158,10 @@ class AbstractDefault
      * Return DateTime with correction
      *
      * @param string $time
-     * @return \DateTime
+     * @return DateTime
+     * @throws Exception
      */
-    protected function getDateTimeDisplay($time='now')
+    protected function getDateTimeDisplay($time = 'now')
     {
         $date = $this->getDateTime($time);
         $date->modify('+' . YOURLS_HOURS_OFFSET .' hour');
@@ -179,13 +173,13 @@ class AbstractDefault
      *
      * @param $key
      * @param $val
-     * @throws \Exception
+     * @throws Exception
      */
     protected function addUrlSetting($key, $val)
     {
         $query = "SHOW COLUMNS FROM " . YOURLS_DB_TABLE_URL . " LIKE '%s'";
         $results = $this->db()->get_results(sprintf($query, $key));
-        if(! $results) {
+        if (!$results) {
             $query = "ALTER TABLE " . YOURLS_DB_TABLE_URL . " ADD (%s)";
             $this->db()->query(sprintf($query, $key . " " . $val['field']));
         }
@@ -195,7 +189,7 @@ class AbstractDefault
      * Drop setting column in url table
      *
      * @param $key
-     * @throws \Exception
+     * @throws Exception
      */
     protected function dropUrlSetting($key)
     {
@@ -213,7 +207,7 @@ class AbstractDefault
      * @param array $values
      * @param $keyword
      * @return mixed
-     * @throws \Exception
+     * @throws Exception
      */
     protected function updateUrlSetting(array $values, $keyword)
     {
@@ -242,13 +236,13 @@ class AbstractDefault
     protected function getCssStyle($name = 'assets/style.css')
     {
         $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
-        if(! is_file($file)) {
+        if (!is_file($file)) {
             return false;
         }
         $css = file_get_contents($file);
         $css = preg_replace_callback("/url\((.*?)\)/", function($matches) {
             $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $matches[1];
-            if(! is_file($file)) {
+            if (!is_file($file)) {
                 return;
             }
             return 'url(data:'.mime_content_type($file).';base64,'.base64_encode(file_get_contents($file)).')';
@@ -266,7 +260,7 @@ class AbstractDefault
     public function getJsScript($name = 'assets/default.js')
     {
         $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
-        if(! is_file($file)) {
+        if (!is_file($file)) {
             return false;
         }
 
@@ -280,7 +274,7 @@ class AbstractDefault
      */
     public function getBootstrap()
     {
-        if(false === self::$_isBootstrap) {
+        if (false === self::$_isBootstrap) {
             self::$_isBootstrap = true;
             $path = yourls_site_url(false) . '/user/plugins/' . self::APP_NAMESPACE . '/assets/lib/bootstrap/dist';
             return trim('
@@ -308,7 +302,7 @@ class AbstractDefault
      */
     protected function startSession()
     {
-        if(session_status() !== PHP_SESSION_ACTIVE) {
+        if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
         }
     }
@@ -320,7 +314,7 @@ class AbstractDefault
      * @param $value
      * @param null $namespace
      */
-    protected function setSession($key, $value, $namespace=null)
+    protected function setSession($key, $value, $namespace = null)
     {
         $namespace = $this->getSessionNamespace($namespace);
 
@@ -435,7 +429,7 @@ class AbstractDefault
      */
     protected function helperGetAllowedPermissions()
     {
-        if($this->getSession('login', 'laemmi-yourls-easy-ldap')) {
+        if ($this->getSession('login', 'laemmi-yourls-easy-ldap')) {
             $inter = array_intersect_key($this->_options['allowed_groups'], $this->getSession('groups', 'laemmi-yourls-easy-ldap'));
             $permissions = [];
             foreach ($inter as $val) {

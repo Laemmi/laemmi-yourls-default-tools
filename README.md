@@ -1,11 +1,12 @@
 # laemmi-yourls-default-tools
 Plugin for YOURLS 1.7
 
-##Description
-Default tools to use in some laemmi plugins
+## Description
+Default tools to use in some laemmi plugins. e.g. twig, bootstrap, jquery
 
 ## Installation
-* In /user/plugins, create a new folder named laemmi-yourls-default-tools.
-* Drop these files in that directory.
-* Via git goto /users/plugins and type git clone https://github.com/Laemmi/laemmi-yourls-default-tools.git
-* Go to the YOURLS Plugins administration page and activate the plugin.
+Go to project dir of yourls and enter
+
+    composer require laemmi/laemmi-yourls-default-tools
+
+Go to the YOURLS Plugins administration page and activate the plugin.

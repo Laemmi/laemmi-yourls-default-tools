@@ -19,7 +19,6 @@
  * IN THE SOFTWARE.
  *
  * @category    laemmi-yourls-default-tools
- * @package     Twig.php
  * @author      Michael Lämmlein <ml@spacerabbit.de>
  * @copyright   ©2015 laemmi
  * @license     http://www.opensource.org/licenses/mit-license.php MIT-License
@@ -27,22 +26,17 @@
  * @since       10.11.15
  */
 
-/**
- * Namespace
- */
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template;
 
-/**
- * Class Twig
- *
- * @package Laemmi\Yourls\DefaultTools\Template
- */
+use Twig_Environment;
+use Twig_Loader_Filesystem;
+
 class Twig implements TemplateInterface
 {
     /**
      * Environment
      *
-     * @var null|\Twig_Environment
+     * @var null|Twig_Environment
      */
     protected $_twig = null;
 
@@ -60,8 +54,8 @@ class Twig implements TemplateInterface
      */
     public function init(array $options)
     {
-        $loader = new \Twig_Loader_Filesystem($options['path_template']);
-        $this->_twig = new \Twig_Environment($loader,[
+        $loader = new Twig_Loader_Filesystem($options['path_template']);
+        $this->_twig = new Twig_Environment($loader,[
             'cache' => $options['path_cache'],
             'auto_reload' => true
         ]);
