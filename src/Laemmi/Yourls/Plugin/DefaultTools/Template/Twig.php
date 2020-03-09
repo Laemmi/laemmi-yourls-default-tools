@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,6 +27,8 @@
  * @since       10.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template;
 
 use Twig_Environment;
@@ -38,14 +41,14 @@ class Twig implements TemplateInterface
      *
      * @var null|Twig_Environment
      */
-    protected $_twig = null;
+    protected $twig = null;
 
     /**
      * Assign values
      *
      * @var array
      */
-    protected $_assign = array();
+    protected $assign = [];
 
     /**
      * Init
@@ -55,12 +58,12 @@ class Twig implements TemplateInterface
     public function init(array $options)
     {
         $loader = new Twig_Loader_Filesystem($options['path_template']);
-        $this->_twig = new Twig_Environment($loader,[
+        $this->twig = new Twig_Environment($loader, [
             'cache' => $options['path_cache'],
             'auto_reload' => true
         ]);
 
-        $this->_twig->addExtension(new Twig\Extension([
+        $this->twig->addExtension(new Twig\Extension([
             'namespace' => $options['namespace']
         ]));
     }
@@ -72,11 +75,11 @@ class Twig implements TemplateInterface
      * @param array $context
      * @return string
      */
-    public function render($name = '', array $context = array())
+    public function render($name = '', array $context = [])
     {
-        $context = array_merge($context, $this->_assign);
-        $this->_assign = [];
-        return $this->_twig->render($this->getName($name), $context);
+        $context = array_merge($context, $this->assign);
+        $this->assign = [];
+        return $this->twig->render($this->getName($name), $context);
     }
 
     /**
@@ -87,7 +90,7 @@ class Twig implements TemplateInterface
      */
     public function assign($key, $value)
     {
-        $this->_assign[$key] = $value;
+        $this->assign[$key] = $value;
     }
 
     /**

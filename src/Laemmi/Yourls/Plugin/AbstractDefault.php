@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,6 +27,8 @@
  * @since       03.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Yourls\Plugin;
 
 use DateTime;
@@ -39,21 +42,21 @@ abstract class AbstractDefault
     /**
      * Namespace
      */
-    const APP_NAMESPACE = 'laemmi-yourls-default-tools';
+    protected const APP_NAMESPACE = 'laemmi-yourls-default-tools';
 
     /**
      * Options
      *
      * @var array
      */
-    protected $_options = [];
+    protected $options = [];
 
     /**
      * Is bootstrap loaded
      *
      * @var bool
      */
-    protected static $_isBootstrap = false;
+    protected static $isBootstrap = false;
 
     /**
      * Constructor
@@ -81,7 +84,9 @@ abstract class AbstractDefault
     /**
      * Init function
      */
-    protected function init() {}
+    protected function init()
+    {
+    }
 
     /**
      * Set options
@@ -92,7 +97,7 @@ abstract class AbstractDefault
     protected function setOptions(array $options)
     {
         $options = array_filter($options);
-        $this->_options = array_merge($this->_options, $options);
+        $this->options = array_merge($this->options, $options);
 
         return $this;
     }
@@ -129,11 +134,11 @@ abstract class AbstractDefault
      */
     protected function db()
     {
-        if (!isset($this->_options['db']) || !$this->_options['db'] instanceof PDO) {
+        if (!isset($this->options['db']) || !$this->options['db'] instanceof PDO) {
             throw new Exception('No database instance available');
         }
 
-        return $this->_options['db'];
+        return $this->options['db'];
     }
 
     /**
@@ -164,7 +169,7 @@ abstract class AbstractDefault
     protected function getDateTimeDisplay($time = 'now')
     {
         $date = $this->getDateTime($time);
-        $date->modify('+' . YOURLS_HOURS_OFFSET .' hour');
+        $date->modify('+' . YOURLS_HOURS_OFFSET . ' hour');
         return $date;
     }
 
@@ -195,7 +200,7 @@ abstract class AbstractDefault
     {
         $query = "SHOW COLUMNS FROM " . YOURLS_DB_TABLE_URL . " LIKE '%s'";
         $results = $this->db()->get_results(sprintf($query, $key));
-        if($results) {
+        if ($results) {
             $query = "ALTER TABLE " . YOURLS_DB_TABLE_URL . " DROP %s";
             $this->db()->query(sprintf($query, $key));
         }
@@ -212,7 +217,7 @@ abstract class AbstractDefault
     protected function updateUrlSetting(array $values, $keyword)
     {
         $query = "UPDATE
-            ".YOURLS_DB_TABLE_URL."
+            " . YOURLS_DB_TABLE_URL . "
          SET
             %s
          WHERE
@@ -220,8 +225,8 @@ abstract class AbstractDefault
          LIMIT 1";
 
         $data = [];
-        foreach($values as $key => $val) {
-            $data[] = $key . "='" . $val ."'";
+        foreach ($values as $key => $val) {
+            $data[] = $key . "='" . $val . "'";
         }
 
         return $this->db()->query(sprintf($query, implode(',', $data), $keyword));
@@ -240,15 +245,19 @@ abstract class AbstractDefault
             return false;
         }
         $css = file_get_contents($file);
-        $css = preg_replace_callback("/url\((.*?)\)/", function($matches) {
+        $css = preg_replace_callback("/url\((.*?)\)/", function ($matches) {
             $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $matches[1];
             if (!is_file($file)) {
                 return;
             }
-            return 'url(data:'.mime_content_type($file).';base64,'.base64_encode(file_get_contents($file)).')';
+            return sprintf(
+                'url(data:%s;base64,%s)',
+                mime_content_type($file),
+                base64_encode(file_get_contents($file))
+            );
         }, $css);
 
-        return '<style>' . $css . '</style>';
+        return sprintf('<style>%s</style>', $css);
     }
 
     /**
@@ -274,8 +283,8 @@ abstract class AbstractDefault
      */
     public function getBootstrap()
     {
-        if (false === self::$_isBootstrap) {
-            self::$_isBootstrap = true;
+        if (false === self::$isBootstrap) {
+            self::$isBootstrap = true;
             $path = yourls_site_url(false) . '/user/plugins/' . self::APP_NAMESPACE . '/assets/lib/bootstrap/dist';
             return trim('
             <link href="' . $path . '/css/bootstrap.min.css" rel="stylesheet">
@@ -328,7 +337,7 @@ abstract class AbstractDefault
      * @param null $namespace
      * @return bool
      */
-    protected function getSession($key, $namespace=null)
+    protected function getSession($key, $namespace = null)
     {
         $namespace = $this->getSessionNamespace($namespace);
 
@@ -340,7 +349,7 @@ abstract class AbstractDefault
      *
      * @param null $namespace
      */
-    protected function resetSession($namespace=null)
+    protected function resetSession($namespace = null)
     {
         $namespace = $this->getSessionNamespace($namespace);
 
@@ -353,7 +362,7 @@ abstract class AbstractDefault
      * @param null $namespace
      * @return null|string
      */
-    protected function getSessionNamespace($namespace=null)
+    protected function getSessionNamespace($namespace = null)
     {
         $namespace = !is_null($namespace) ? $namespace : static::APP_NAMESPACE;
 
@@ -391,14 +400,14 @@ abstract class AbstractDefault
      *
      * @var null|TemplateInterface
      */
-    private $_template = null;
+    private $template = null;
 
     /**
      * Init Template
      *
      * @param array $options
      */
-    protected function initTemplate(array $options = array())
+    protected function initTemplate(array $options = [])
     {
         $options['path_template'] = isset($options['path_template']) ? $options['path_template'] : 'templates';
         $options['path_template'] = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $options['path_template'];
@@ -406,8 +415,8 @@ abstract class AbstractDefault
         $options['path_cache'] = YOURLS_ABSPATH . '/' . $options['path_cache'];
         $options['namespace'] = static::APP_NAMESPACE;
 
-        $this->_template = Template::factory('twig');
-        $this->_template->init($options);
+        $this->template = Template::factory('twig');
+        $this->template->init($options);
     }
 
     /**
@@ -417,7 +426,7 @@ abstract class AbstractDefault
      */
     protected function getTemplate()
     {
-        return $this->_template;
+        return $this->template;
     }
 
     ####################################################################################################################
@@ -430,7 +439,10 @@ abstract class AbstractDefault
     protected function helperGetAllowedPermissions()
     {
         if ($this->getSession('login', 'laemmi-yourls-easy-ldap')) {
-            $inter = array_intersect_key($this->_options['allowed_groups'], $this->getSession('groups', 'laemmi-yourls-easy-ldap'));
+            $inter = array_intersect_key(
+                $this->options['allowed_groups'],
+                $this->getSession('groups', 'laemmi-yourls-easy-ldap')
+            );
             $permissions = [];
             foreach ($inter as $val) {
                 foreach ($val as $_val) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -25,6 +26,8 @@
  * @version     1.0.0
  * @since       10.11.15
  */
+
+declare(strict_types=1);
 
 namespace Laemmi\Yourls\Plugin\DefaultTools;
 

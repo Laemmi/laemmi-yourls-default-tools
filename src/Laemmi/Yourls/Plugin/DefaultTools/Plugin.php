@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,6 +27,8 @@
  * @since       03.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Yourls\Plugin\DefaultTools;
 
 use Exception;
@@ -36,7 +39,7 @@ class Plugin extends AbstractDefault
     /**
      * Namespace
      */
-    const APP_NAMESPACE = 'laemmi-yourls-default-tools';
+    protected const APP_NAMESPACE = 'laemmi-yourls-default-tools';
 
     /**
      * Action activated_plugin
@@ -58,7 +61,7 @@ class Plugin extends AbstractDefault
         unset($plugins[$key]);
         $key2 = $this->isLaemmiPlugins($plugins);
         $key = false !== $key2 ? $key2 : $key;
-        array_splice($plugins, $key, 0, array($plugin));
+        array_splice($plugins, $key, 0, [$plugin]);
 
         yourls_update_option('active_plugins', $plugins);
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,6 +27,8 @@
  * @since       10.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template;
 
 interface TemplateInterface
@@ -37,7 +40,7 @@ interface TemplateInterface
      * @param array $context
      * @return string
      */
-    public function render($name = '', array $context = array());
+    public function render($name = '', array $context = []);
 
     /**
      * Assign

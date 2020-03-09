@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -27,6 +28,8 @@
  * @since       16.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Poedit\Extractor;
 
 /**
@@ -41,21 +44,21 @@ class TwigYourls
      *
      * @var array
      */
-    protected $_templates = [];
+    protected $templates = [];
 
     /**
      * Parameters
      *
      * @var array
      */
-    protected $_parameters = [];
+    protected $parameters = [];
 
     /**
      * Destruct
      */
     public function __destruct()
     {
-        foreach($this->_templates as $val) {
+        foreach ($this->templates as $val) {
             unlink($val);
         }
 
@@ -74,8 +77,8 @@ class TwigYourls
 
         $file_cache = tempnam(sys_get_temp_dir(), uniqid());
 
-        if(file_put_contents($file_cache, $content)) {
-            $this->_templates[] = $file_cache;
+        if (file_put_contents($file_cache, $content)) {
+            $this->templates[] = $file_cache;
         }
     }
 
@@ -86,7 +89,7 @@ class TwigYourls
      */
     public function addGettextParameter($value)
     {
-        $this->_parameters[] = $value;
+        $this->parameters[] = $value;
     }
 
     /**
@@ -96,10 +99,10 @@ class TwigYourls
     {
 //        $command = 'xgettext';
         $command = '/usr/local/opt/gettext/bin/xgettext';
-        $command .= ' ' . implode(' ', $this->_parameters);
-        $command .= ' ' . implode(' ', $this->_templates);
+        $command .= ' ' . implode(' ', $this->parameters);
+        $command .= ' ' . implode(' ', $this->templates);
 
-        $this->_log($command);
+        $this->log($command);
 
         $error = 0;
         $output = system($command, $error);
@@ -111,7 +114,7 @@ class TwigYourls
                 $output
             );
 
-            $this->_log($m);
+            $this->log($m);
 
             throw new \RuntimeException($m);
         }
@@ -122,8 +125,8 @@ class TwigYourls
      */
     public function reset()
     {
-        $this->_templates = [];
-        $this->_parameters = [];
+        $this->templates = [];
+        $this->parameters = [];
     }
 
     /**
@@ -131,7 +134,7 @@ class TwigYourls
      *
      * @param $value
      */
-    private function _log($value)
+    private function log($value)
     {
         $value = "# " . $value . "\n";
 //        error_log($value, 3, __DIR__ . '/../_cache/TwigYourls.log');

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -26,15 +27,20 @@
  * @since       10.11.15
  */
 
+declare(strict_types=1);
+
 namespace Laemmi\Yourls\Plugin\DefaultTools\Template\Twig;
 
-class Extension extends \Twig_Extension
+use Twig_Extension;
+use Twig_SimpleFunction;
+
+class Extension extends Twig_Extension
 {
-    private $_options = [];
+    private $options = [];
 
     public function __construct(array $options)
     {
-        $this->_options = $options;
+        $this->options = $options;
     }
 
     public function getName()
@@ -44,13 +50,13 @@ class Extension extends \Twig_Extension
 
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction('yourls__', function($text, $domain = '') {
-                if(! $domain) {
-                    $domain = $this->_options['namespace'];
+        return [
+            new Twig_SimpleFunction('yourls__', function ($text, $domain = '') {
+                if (!$domain) {
+                    $domain = $this->options['namespace'];
                 }
                 return yourls__($text, $domain);
             }),
-        );
+        ];
     }
 }
