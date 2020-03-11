@@ -3,7 +3,7 @@
 Plugin Name: laemmi´s default tools
 Plugin URI: https://github.com/Laemmi/laemmi-yourls-default-tools
 Description: Default tools for laemmi plugins
-Version: 1.0.4
+Version: 1.1.0
 Author: laemmi
 Author URI: https://github.com/Laemmi
 Copyright 2015 laemmi
@@ -35,6 +35,8 @@ Copyright 2015 laemmi
  * @version     1.0.0
  * @since       03.11.15
  */
+
+declare(strict_types=1);
 
 use Laemmi\Yourls\Plugin\DefaultTools\Plugin;
 

@@ -94,7 +94,7 @@ abstract class AbstractDefault
      * @param array $options
      * @return $this
      */
-    protected function setOptions(array $options)
+    protected function setOptions(array $options): self
     {
         $options = array_filter($options);
         $this->options = array_merge($this->options, $options);
@@ -107,10 +107,8 @@ abstract class AbstractDefault
      *
      * @param $name
      */
-    protected function addAction($name)
+    protected function addAction($name): void
     {
-//         $hook, $function_name, $priority = 10, $accepted_args = 1, $type = 'action'
-//        yourls_add_filter(substr($name, 7), [$this, $name], 10, 1, 'action');
         yourls_add_action(substr($name, 7), [$this, $name]);
     }
 
@@ -119,10 +117,8 @@ abstract class AbstractDefault
      *
      * @param $name
      */
-    protected function addFilter($name)
+    protected function addFilter($name): void
     {
-//         $hook, $function_name, $priority = 10, $accepted_args = NULL, $type = 'filter'
-//        yourls_add_filter(substr($name, 7), [$this, $name], 10, NULL, 'filter');
         yourls_add_filter(substr($name, 7), [$this, $name]);
     }
 
@@ -148,15 +144,13 @@ abstract class AbstractDefault
      * @return DateTime
      * @throws Exception
      */
-    protected function getDateTime($time = 'now')
+    protected function getDateTime($time = 'now'): DateTime
     {
         // Check if UNIX-Timestamp
         if (preg_match('/^\d{10}/', $time)) {
             $time = '@' . $time;
         }
-        $date = new DateTime($time, new DateTimeZone('UTC'));
-
-        return $date;
+        return new DateTime($time, new DateTimeZone('UTC'));
     }
 
     /**
@@ -166,7 +160,7 @@ abstract class AbstractDefault
      * @return DateTime
      * @throws Exception
      */
-    protected function getDateTimeDisplay($time = 'now')
+    protected function getDateTimeDisplay($time = 'now'): DateTime
     {
         $date = $this->getDateTime($time);
         $date->modify('+' . YOURLS_HOURS_OFFSET . ' hour');
@@ -180,7 +174,7 @@ abstract class AbstractDefault
      * @param $val
      * @throws Exception
      */
-    protected function addUrlSetting($key, $val)
+    protected function addUrlSetting($key, $val): void
     {
         $query = "SHOW COLUMNS FROM " . YOURLS_DB_TABLE_URL . " LIKE '%s'";
         $results = $this->db()->get_results(sprintf($query, $key));
@@ -196,7 +190,7 @@ abstract class AbstractDefault
      * @param $key
      * @throws Exception
      */
-    protected function dropUrlSetting($key)
+    protected function dropUrlSetting($key): void
     {
         $query = "SHOW COLUMNS FROM " . YOURLS_DB_TABLE_URL . " LIKE '%s'";
         $results = $this->db()->get_results(sprintf($query, $key));
@@ -236,19 +230,19 @@ abstract class AbstractDefault
      * Get css file with style tag
      *
      * @param string $name
-     * @return bool|string
+     * @return string
      */
-    protected function getCssStyle($name = 'assets/style.css')
+    protected function getCssStyle($name = 'assets/style.css'): string
     {
         $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
         if (!is_file($file)) {
-            return false;
+            return '';
         }
         $css = file_get_contents($file);
         $css = preg_replace_callback("/url\((.*?)\)/", function ($matches) {
             $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $matches[1];
             if (!is_file($file)) {
-                return;
+                return '';
             }
             return sprintf(
                 'url(data:%s;base64,%s)',
@@ -266,11 +260,11 @@ abstract class AbstractDefault
      * @param string $name
      * @return string
      */
-    public function getJsScript($name = 'assets/default.js')
+    public function getJsScript($name = 'assets/default.js'): string
     {
         $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $name;
         if (!is_file($file)) {
-            return false;
+            return '';
         }
 
         return '<script>' . file_get_contents($file) . '</script>';
@@ -279,9 +273,9 @@ abstract class AbstractDefault
     /**
      * Get bootstrap js
      *
-     * @return bool|string
+     * @return string
      */
-    public function getBootstrap()
+    public function getBootstrap(): string
     {
         if (false === self::$isBootstrap) {
             self::$isBootstrap = true;
@@ -292,13 +286,13 @@ abstract class AbstractDefault
             <script src="' . $path . '/js/bootstrap.min.js"></script>
             ');
         }
-        return false;
+        return '';
     }
 
     /**
      * Load textdomain for translations
      */
-    public function loadTextdomain()
+    public function loadTextdomain(): void
     {
         $file = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/translations';
         yourls_load_custom_textdomain(static::APP_NAMESPACE, $file);
@@ -309,7 +303,7 @@ abstract class AbstractDefault
     /**
      * Start session
      */
-    protected function startSession()
+    protected function startSession(): void
     {
         if (session_status() !== PHP_SESSION_ACTIVE) {
             session_start();
@@ -323,7 +317,7 @@ abstract class AbstractDefault
      * @param $value
      * @param null $namespace
      */
-    protected function setSession($key, $value, $namespace = null)
+    protected function setSession($key, $value, $namespace = null): void
     {
         $namespace = $this->getSessionNamespace($namespace);
 
@@ -349,7 +343,7 @@ abstract class AbstractDefault
      *
      * @param null $namespace
      */
-    protected function resetSession($namespace = null)
+    protected function resetSession($namespace = null): void
     {
         $namespace = $this->getSessionNamespace($namespace);
 
@@ -388,7 +382,7 @@ abstract class AbstractDefault
      * @param $key
      * @param $val
      */
-    protected function setRequest($key, $val)
+    protected function setRequest($key, $val): void
     {
         $_REQUEST[$key] = $val;
     }
@@ -407,7 +401,7 @@ abstract class AbstractDefault
      *
      * @param array $options
      */
-    protected function initTemplate(array $options = [])
+    protected function initTemplate(array $options = []): void
     {
         $options['path_template'] = isset($options['path_template']) ? $options['path_template'] : 'templates';
         $options['path_template'] = YOURLS_PLUGINDIR . '/' . static::APP_NAMESPACE . '/' . $options['path_template'];
@@ -424,7 +418,7 @@ abstract class AbstractDefault
      *
      * @return TemplateInterface|null
      */
-    protected function getTemplate()
+    protected function getTemplate(): ?Template\TemplateInterface
     {
         return $this->template;
     }
@@ -462,10 +456,18 @@ abstract class AbstractDefault
      * @param $permission
      * @return bool
      */
-    protected function _hasPermission($permission)
+    protected function hasPermission($permission): bool
     {
         $permissions = $this->helperGetAllowedPermissions();
 
         return isset($permissions[$permission]);
+    }
+
+    /**
+     * @deprecated since 2020-03-11
+     */
+    protected function _hasPermission($permission)
+    {
+        return $this->hasPermission($permission);
     }
 }

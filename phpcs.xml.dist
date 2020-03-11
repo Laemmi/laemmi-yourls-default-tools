@@ -11,6 +11,14 @@
     <rule ref="PSR12"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
 
+    <rule ref="PSR1">
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps" />
+    </rule>
+
+    <rule ref="PSR2">
+        <exclude name="PSR2.Methods.MethodDeclaration.Underscore" />
+    </rule>
+
     <!-- Paths to check -->
     <file>src</file>
     <file>tests</file>
